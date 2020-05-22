@@ -1488,12 +1488,16 @@ class Manager implements IManager {
 		if ($password === null || $share->getPassword() === null) {
 			return false;
 		}
-
+		$beforeEvent = new GenericEvent(null, ['shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.beforelinkpasswordcheck', $beforeEvent);
 		$newHash = '';
 		if (!$this->hasher->verify($password, $share->getPassword(), $newHash)) {
+			$failEvent = new GenericEvent(null, ['shareObject' => $share]);
+			$this->eventDispatcher->dispatch('share.failedlinkpasswordcheck', $failEvent);
 			return false;
 		}
-
+		$afterEvent = new GenericEvent(null, ['shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.afterlinkpasswordcheck', $afterEvent);
 		if (!empty($newHash)) {
 			$share->setPassword($newHash);
 			$provider = $this->factory->getProviderForType($share->getShareType());

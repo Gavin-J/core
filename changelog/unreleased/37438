@@ -1,0 +1,6 @@
+Enhancement: Add 3 new events (before-fail-after) for link password validations
+
+'share.beforelinkpasswordcheck', 'share.afterlinkpasswordcheck' and 'share.failedlinkpasswordcheck'
+events have been added for link password validations.
+
+https://github.com/owncloud/core/pull/37438
